@@ -11,19 +11,19 @@ class Reachability
 	end
 
 	def self.with_address( address, &callback )
-		ref = SCNetworkReachabilityCreateWithAddress( KCFAllocatorDefault, address )
+		ref = SCNetworkReachabilityCreateWithAddress( KCFAllocatorDefault, address.to_sockaddress )
 		raise "bad address: #{address}" unless ref
 		Reachability.new( ref, callback )
 	end
 
 	def self.for_internet( &callback )
-		internet = Object.new
-		Reachability.with_address( internet, callback )
+		internet = '0.0.0.0' # derived from example as 0.0.0.0
+		Reachability.new( SCNetworkReachabilityCreateWithAddress( KCFAllocatorDefault, internet.to_sockaddress ), callback )
 	end
 
 	def self.for_wifi( &callback )
-		wifi = Object.new
-		WifiReachability.with_address( wifi, callback )
+		wifi = '169.254.0.0' # IN_LINKLOCALNETNUM is defined in <netinet/in.h> as 169.254.0.0		ref = wifi.to_sockaddress
+		WifiReachability.new( SCNetworkReachabilityCreateWithAddress( KCFAllocatorDefault, wifi.to_sockaddress ), callback )
 	end
 
 	def start_notifier
@@ -114,6 +114,16 @@ private
 
 	def initialize( target, callback = nil )
 		super( target, callback )
+	end
+
+end
+
+class String
+
+	def to_sockaddress
+		sockaddress_ptr = Pointer.new( '{sockaddr=CC[14c]}' )
+		sockaddress_ptr[ 0 ] = self
+		return sockaddress_ptr
 	end
 
 end
