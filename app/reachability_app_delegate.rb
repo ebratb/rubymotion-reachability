@@ -13,13 +13,6 @@ class ReachabilityAppDelegate
 		@window.rootViewController = NSBundle.mainBundle.loadNibNamed( 'Reachability', owner: self, options: nil ).first
 		@window.rootViewController.wantsFullScreenLayout = true
 
-		# observe the kNetworkReachabilityChangedNotification and when posted, cal "reachability_changed" method
-		NSNotificationCenter.defaultCenter.addObserver( self,
-			selector: 'reachability_changed',
-			name: Reachability::KReachabilityChangedNotification,
-			object: nil
-		)
-
 		# hostname setup
 		hostname = 'www.apple.com'
 		hostname_label.text = "Remote Host: #{hostname}"
@@ -56,30 +49,24 @@ class ReachabilityAppDelegate
 		true
 	end
 
-	def reachability_changed( note )
-		current = note.object
-		current.handle_event if current.kind_of? Reachability
-	end
-
 	def configure_text_field( monitor, icon, status )
 		conn_required = monitor.connection_required?
-		status_text = ''
-		case monitor.current_status
-			when :NotReachable
-				status_text = 'Access Not Available'
+		status_text = case monitor.current_status
+			when :ReachableViaWWAN
+				icon.image = UIImage.imageNamed( 'wwan.png' )
+				'Reachable viw WWAN'
+			when :ReachableViaWiFi
+				icon.image = UIImage.imageNamed( 'wifi.png' )
+				'Reachable via WiFi'
+			else # :NotReachable
 				icon.image = UIImage.imageNamed( 'stop.png' )
 				# minor interface detail- connectionRequired may return yes,
 				# even when the host is unreachable.
 				conn_required = false
-			when :ReachableViaWWAN
-				status_text = 'Reachable WWAN'
-				icon.image = UIImage.imageNamed( 'wwan.png' )
-			when :ReachableViaWiFi
-				status_text = 'Reachable WiFi'
-				icon.image = UIImage.imageNamed( 'wifi.png' )
+				'Access Not Available'
 		end
 		status_text = "#{status_text}, Connection Required" if conn_required
-		status.text= status_text
+		status.text = status_text
 	end
 
 end
