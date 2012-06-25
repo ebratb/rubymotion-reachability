@@ -41,13 +41,21 @@ class ReachabilityAppDelegate
 			configure_text_field( monitor, wifi_icon, wifi_status )
 		end
 
-		# start monitors
-		@monitors.each( &:start_notifier )
-
 		# now show main screen
 		@window.makeKeyAndVisible
 		true
 	end
+
+	def applicationDidBecomeActive( application )
+		@monitors.each( &:start_notifier )
+	end
+
+	def applicationWillTerminate( application )
+		@monitors.each( &:stop_notifier )
+		@monitors.clear
+	end
+
+private
 
 	def configure_text_field( monitor, icon, status )
 		conn_required = monitor.connection_required?
