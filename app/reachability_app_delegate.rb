@@ -32,14 +32,14 @@ class ReachabilityAppDelegate
 		end
 
 		# internet reachability
-		@monitors << Reachability.for_internet do |monitor|
-			configure_text_field( monitor, internet_icon, internet_status )
-		end
+		# @monitors << Reachability.for_internet do |monitor|
+		# 	configure_text_field( monitor, internet_icon, internet_status )
+		# end
 
 		# wifi reachability
-		@monitors << Reachability.for_wifi do |monitor|
-			configure_text_field( monitor, wifi_icon, wifi_status )
-		end
+		# @monitors << Reachability.for_wifi do |monitor|
+		# 	configure_text_field( monitor, wifi_icon, wifi_status )
+		# end
 
 		# now show main screen
 		@window.makeKeyAndVisible
