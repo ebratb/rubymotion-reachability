@@ -21,9 +21,9 @@ describe "Pointer class in RubyMotion" do
 		@context.should.be.same_as @context_ptr[ 0 ]
   end
 
-  it "has a description for 'sockaddr' structures" do
-		struct_type = '^{sockaddr=CC[14c]}' # got from a program failure
-		@address_ptr = Pointer.new_with_type( struct_type )
-  end
+  # it "has a description for 'sockaddr' structures" do
+  # 		struct_type = '^{sockaddr=CC[14c]}' # got from a program failure
+  # 		@address_ptr = Pointer.new_with_type( struct_type )
+  # end
 
 end
