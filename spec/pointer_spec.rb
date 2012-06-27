@@ -22,7 +22,7 @@ describe "Pointer class in RubyMotion" do
   end
 
   it "has a description for 'sockaddr' structures" do
-		struct_type = '{sockaddr=CC[14c]}' # got from a program failure
+		struct_type = '^{sockaddr=CC[14c]}' # got from a program failure
 		@address_ptr = Pointer.new_with_type( struct_type )
   end
 
