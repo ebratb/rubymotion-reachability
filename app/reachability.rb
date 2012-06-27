@@ -78,6 +78,7 @@ class Reachability
 	def self.finalize( obj_id )
 		notifier = ObjectSpace._id2ref( obj_id )
 		notifier.stop_notifier if notifier && notifier.kind_of?( Reachability )
+	rescue NotImplementedError
 	end
 
 protected
