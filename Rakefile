@@ -4,7 +4,7 @@ require 'motion/project'
 
 Motion::Project::App.setup do |app|
 	app.delegate_class = 'ReachabilityAppDelegate'
-	app.deployment_target = '4.3'
+	app.deployment_target = '5.1'
 	app.frameworks = %w[ UIKit Foundation SystemConfiguration ]
 	app.icons << 'icon.png'
 	app.identifier = 'com.edgebound.Reachability'
